@@ -39,7 +39,7 @@ class ThrottlingMiddlware(BaseMiddleware):
             else:
                 await self.storage.set(key, '1', ex=self.limit)
                 await event.answer(
-                    "<b>Botdan sekinroq foydalaning !</b>"
+                    "<b>Biroz kuting !</b>"
                 )
                 return
         except :

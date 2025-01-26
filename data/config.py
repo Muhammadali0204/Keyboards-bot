@@ -13,6 +13,7 @@ REDIS_URL = config("REDIS_URL", cast=str)
 RATE_LIMIT = config('RATE_LIMIT', cast=int)
 WEBHOOK_HOST = config("WEBHOOK_HOST", cast=str)
 MAX_CHANNELS_COUNT = config('MAX_CHANNELS_COUNT', cast=int)
+REDIS_KEY_PREFIX = config('REDIS_KEY_PREFIX', cast=str)
 
 WEBHOOK_PATH = f"/{BOT_TOKEN}"
 WEBHOOK_URI = WEBHOOK_HOST + WEBHOOK_PATH

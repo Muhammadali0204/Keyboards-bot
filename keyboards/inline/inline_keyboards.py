@@ -2,7 +2,7 @@ from typing import List
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
-from models.models import InlineButtonMessage, MessageButton
+from models.models import InlineButtonMessage, MessageButton, Channel
 
 
 
@@ -25,3 +25,13 @@ def send_message_keyboard(inline_buttons : List):
     keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
     
     return keyboard
+
+def channel_list(channels : List[Channel]):
+    builder = InlineKeyboardBuilder()
+    for channel in channels:
+        builder.button(text=channel.name, url=channel.url)
+    
+    builder.button(text="Tekshirish ✅", callback_data='check')
+    builder.adjust(1)
+    
+    return builder.as_markup()

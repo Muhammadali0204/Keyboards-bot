@@ -3,9 +3,10 @@ from aiogram.fsm.context import FSMContext
 
 from keyboards.reply import admin_reply_keyboards
 
+from loader import bot
 from models.models import *
-from data.config import BOT_USERNAME
 from utils.enums import MEDIA_CLASSES
+from data.config import BOT_USERNAME, ADMINS
 
 
 
@@ -55,3 +56,13 @@ async def bosh_menu(msg : Message, state : FSMContext):
         reply_markup=(await admin_reply_keyboards.buttons_key())
     )
     await state.clear()
+    
+async def send_message_to_admins(message):
+    for admin in ADMINS:
+        try :
+            await bot.send_message(
+                admin,
+                message
+            )
+        except:
+            pass

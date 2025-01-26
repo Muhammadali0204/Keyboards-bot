@@ -4,18 +4,16 @@ from aiohttp import web
 from aiogram import types
 from fastapi import FastAPI, HTTPException, Request
 
-from loader import bot, dp
+from loader import bot, dp, redis
 from handlers.user.main import router
 from handlers.admin.main import admin_router
 from middlewares.ratelimit import ThrottlingMiddlware
-from data.config import RATE_LIMIT, BOT_TOKEN, WEBHOOK_PATH
+from data.config import RATE_LIMIT, BOT_TOKEN, WEBHOOK_PATH, REDIS_KEY_PREFIX
 from utils.startup import shutdown, get_redis, set_webhook, set_command, notify_admins, init_db
 
 
 
 app = FastAPI()
-
-redis = None
 
 
 async def handle_webhook(request: Request):
@@ -42,7 +40,7 @@ async def on_startup():
     dp.include_routers(admin_router, router)
 
     redis = await get_redis()
-    dp.message.middleware.register(ThrottlingMiddlware(redis, RATE_LIMIT)) 
+    dp.message.middleware.register(ThrottlingMiddlware(redis, RATE_LIMIT, REDIS_KEY_PREFIX)) 
 
 async def on_shutdown():
     global redis

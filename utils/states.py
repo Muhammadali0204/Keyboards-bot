@@ -2,6 +2,10 @@ from aiogram.fsm.state import StatesGroup, State
 
 
 
+class IsMemberState(StatesGroup):
+    is_member = State()
+
+
 class States(StatesGroup):
     get_button_name = State()
     get_msg = State()

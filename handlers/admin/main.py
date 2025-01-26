@@ -62,16 +62,6 @@ async def start_command(msg : Message, state : FSMContext, command : CommandObje
             reply_markup=(await admin_reply_keyboards.buttons_key())
         )
         await send_admin_messages(msg, state, None)
-        
-        inviter_id = command.args
-        if inviter_id and inviter_id.isdigit() and int(inviter_id) != msg.from_user.id:
-            try :
-                await Invite.create(
-                    user = user,
-                    inviter_id = int(inviter_id),
-                )
-            except :
-                pass
 
 @admin_router.message(F.text == "🏠 Bosh menu")
 async def bosh_menu_(msg : Message, state : FSMContext):
