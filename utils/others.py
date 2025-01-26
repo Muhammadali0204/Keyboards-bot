@@ -43,12 +43,6 @@ def get_emojiname(status):
         return "Top Active 👑🟢"
     
 async def show_panel(msg : Message, state : FSMContext):
-    data = (await state.get_data()).get('id', None)
-    if data is not None:
-        await msg.answer(
-            '<b>Admin panelga kirish uchun bosh menu\'ga o\'ting :</b>'
-        )
-        return
     await msg.answer(
         '<b>Admin panel :</b>',
         reply_markup=admin_reply_keyboards.admin_panel

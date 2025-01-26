@@ -113,6 +113,9 @@ def channels_keyboard(channels : List[Channel]):
 limited_keyboard = InlineKeyboardMarkup(
     inline_keyboard=[
         [
+            InlineKeyboardButton(text='♻️Taklif qilish limitini tahrirlash', callback_data='edit_limit')
+        ],
+        [
             InlineKeyboardButton(text='⭕️ To\'xtatish', callback_data='stop_limited')
         ],
         [
@@ -124,10 +127,26 @@ limited_keyboard = InlineKeyboardMarkup(
 rating_keyboard = InlineKeyboardMarkup(
     inline_keyboard=[
         [
+            InlineKeyboardButton(text='♻️Ko\'rinish limitini tahrirlash', callback_data='edit_limit')
+        ],
+        [
             InlineKeyboardButton(text='⭕️ To\'xtatish', callback_data='stop_rating')
         ],
         [
             InlineKeyboardButton(text='❌ Yopish', callback_data='yopish')
+        ]
+    ]
+)
+
+
+channel_type_keyboard = InlineKeyboardMarkup(
+    inline_keyboard=[
+        [
+            InlineKeyboardButton(text='Oddiy kanal', callback_data='channel_type:default'),
+            InlineKeyboardButton(text='Sovg\'a kanal', callback_data='channel_type:gift')
+        ],
+        [
+            InlineKeyboardButton(text='❌ Bekor qilish', callback_data='bekor')
         ]
     ]
 )

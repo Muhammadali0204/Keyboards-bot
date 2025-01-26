@@ -57,16 +57,12 @@ bekor_keyboard = ReplyKeyboardMarkup(
 admin_panel = ReplyKeyboardMarkup(
     keyboard=[
         [
-            KeyboardButton(text='Foydalanuvchilarga xabar yuborish 📤')
-        ],
-        [
+            KeyboardButton(text='Foydalanuvchilarga xabar yuborish 📤'),
             KeyboardButton(text='Xabar yuborishni to\'xtatish ❌')
         ],
         [
-            KeyboardButton(text='Inviter tugmani tahrirlash ♻️')
+            KeyboardButton(text='Inviter tugmani tahrirlash ♻️'),
+            KeyboardButton(text='Kanallar 🔗')
         ],
-        [
-            KeyboardButton(text='Kanallar')
-        ]
     ], resize_keyboard=True
 )

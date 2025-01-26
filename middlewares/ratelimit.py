@@ -30,21 +30,18 @@ class ThrottlingMiddlware(BaseMiddleware):
         if user_id in ADMINS:
             return await handler(event, data)
         
-        now = datetime.now()
         key = self._get_storage_key(user_id)
         
         try:
             user_data = await self.storage.get(key)
             if user_data is None:
-                await self.storage.set(key, now.timestamp(), ex=self.limit+1)
+                await self.storage.set(key, '1', ex=self.limit)
             else:
-                time = datetime.fromtimestamp(float((await self.storage.get(key)).decode()))
-                await self.storage.set(key, now.timestamp(), ex=self.limit+1)
-                if now - time < timedelta(seconds=self.limit):
-                    await event.answer(
-                        "<b>Botdan sekinroq foydalaning !</b>"
-                    )
-                    return
+                await self.storage.set(key, '1', ex=self.limit)
+                await event.answer(
+                    "<b>Botdan sekinroq foydalaning !</b>"
+                )
+                return
         except :
             pass
         return await handler(event, data)

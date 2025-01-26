@@ -12,8 +12,8 @@ from keyboards.inline import admin_inline_keyboards
 router = Router(name='Add inviter button')
 
 router.include_routers(
-    edit_router,
     create_router,
+    edit_router,
 )
 
 @router.message(F.text == 'Inviter tugmani tahrirlash ♻️')

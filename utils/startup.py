@@ -9,7 +9,7 @@ from data.config import ADMINS, DB_URL, REDIS_URL, WEBHOOK_URI
 
 
 async def set_webhook():
-    await bot.set_webhook(WEBHOOK_URI)
+    await bot.set_webhook(WEBHOOK_URI, drop_pending_updates=True)
 
 async def set_command(bot : Bot):
     await bot.set_my_commands(

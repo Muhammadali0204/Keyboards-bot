@@ -2,6 +2,7 @@ from aiogram import F, Router
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message, ContentType
 
+from utils.others import bosh_menu
 from utils.enums import ButtonStatus
 from keyboards.reply import reply_keyboards
 from utils.send_messages import send_messages
@@ -26,11 +27,7 @@ async def main_func(msg : Message, state : FSMContext):
                     reply_markup=(await reply_keyboards.buttons_key(parent_button))
                 )
         else:
-            await msg.answer(
-                f"<b>🏠 Bosh menu :</b>",
-                reply_markup=(await reply_keyboards.buttons_key())
-            )
-            await state.clear()
+            await bosh_menu(msg, state)
     else:
         button = await Button.filter(name=msg.text, status__in=[ButtonStatus.ACTIVE, ButtonStatus.TOP_ACTIVE], parent=None).first()
         if button:

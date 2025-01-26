@@ -28,7 +28,7 @@ async def send_admin_messages(msg : Message, state : FSMContext, parent_button :
         
     if msg.text.replace('🟢', '').replace('🔴', '').strip() == '⚡️Taklif havolasini olish⚡️':
         await msg.answer(
-            f"<b>Taklif havolasini https://t.me/{BOT_USERNAME}?start={msg.from_user.id} ko'rinishida qo'ymoqchi bo'lsangiz --link-- deb yozing.\n\nAgar biror so'z ostiga link qo'yilgan holda ko'rinishi kerak bo'lsa --biror matn-- ko'rinishida yuboring!</b>"
+            f"<b>Taklif havolasini https://t.me/{BOT_USERNAME}?start={msg.from_user.id} ko'rinishida qo'ymoqchi bo'lsangiz<blockquote>--link--</blockquote>deb yozing.\n\nAgar biror so'z ostiga link qo'yilgan holda ko'rinishi kerak bo'lsa <blockquote>--biror matn--</blockquote> ko'rinishida yuboring!</b>"
         )
         
         for message in messages:

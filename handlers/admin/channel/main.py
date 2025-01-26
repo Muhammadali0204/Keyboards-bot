@@ -13,7 +13,7 @@ router.include_routers(
     edit_channel.router,
 )
 
-@router.message(F.text == 'Kanallar')
+@router.message(F.text == 'Kanallar 🔗')
 async def channel(msg : Message):
     channels = await Channel.all()
     await msg.answer(

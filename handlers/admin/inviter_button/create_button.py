@@ -50,7 +50,7 @@ async def get_btn_name(msg : Message, state : FSMContext):
         
 @router.message(InviterStates.get_inviter_btn_limit_lim, F.content_type == ContentType.TEXT)
 async def get_limit(msg : Message, state : FSMContext):
-    if msg.text.isdigit() and int(msg.text) < 51:
+    if msg.text.isdigit() and 0 < int(msg.text) < 51:
         btn_name = (await state.get_data())['btn_name']
         btn = await Button.create(
             name = btn_name,
@@ -86,7 +86,7 @@ async def get_limit(msg : Message, state : FSMContext):
             await state.clear()
     else:
         await msg.answer(
-            "<b>Faqat 50 dan oshmagan bo'lgan son kiriting :</b>",
+            "<b>Faqat 50 dan oshmagan va 1 dan kam bo'lmagan son kiriting :</b>",
             reply_markup=admin_reply_keyboards.bekor_keyboard
         )
 
@@ -120,7 +120,7 @@ async def get_btn_name(msg : Message, state : FSMContext):
         
 @router.message(InviterStates.get_inviter_btn_limit_rat, F.content_type == ContentType.TEXT)
 async def get_limit(msg : Message, state : FSMContext):
-    if msg.text.isdigit() and 2 < int(msg.text) < 51:
+    if msg.text.isdigit() and 0 < int(msg.text) < 51:
         btn_name = (await state.get_data())['btn_name']
         btn = await Button.create(
             name = btn_name,
@@ -156,6 +156,6 @@ async def get_limit(msg : Message, state : FSMContext):
             await state.clear()
     else:
         await msg.answer(
-            "<b>Faqat 50 dan oshmagan va 3 dan kam bo'lmagan son kiriting :</b>",
+            "<b>Faqat 50 dan oshmagan va 1 dan kam bo'lmagan son kiriting :</b>",
             reply_markup=admin_reply_keyboards.bekor_keyboard
         )

@@ -16,4 +16,10 @@ router.include_router(send_message_users.router)
 
 @router.message(StateFilter(None), F.text.lower() == 'admin')
 async def admin_panel(msg : Message, state : FSMContext):
+    data = (await state.get_data()).get('id', None)
+    if data is not None:
+        await msg.answer(
+            '<b>Admin panelga kirish uchun bosh menu\'ga o\'ting :</b>'
+        )
+        return
     await show_panel(msg, state)

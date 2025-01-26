@@ -2,6 +2,8 @@ from tortoise import fields
 from tortoise.models import Model
 from tortoise.signals import pre_save
 from tortoise.exceptions import IntegrityError
+
+from data.config import MAX_CHANNELS_COUNT
 from utils.enums import InviteStatus, ButtonStatus, MessageType, InviterBtnType, ChannelType
 
 
@@ -83,10 +85,11 @@ class InviterButton(Model):
         table = 'inviter_button'
         
     @staticmethod
-    async def ensure_single(*args, **kwargs):
-        count = await InviterButton.all().count()
-        if count >= 1:
-            raise IntegrityError('Bu jadvalga faqat bitta ma\'lumot yozish mumkin!')
+    async def ensure_single(sender, instance, using_db, update_fields):
+        if instance.id is None:
+            count = await InviterButton.all().count()
+            if count >= 1:
+                raise IntegrityError('Bu jadvalga faqat bitta ma\'lumot yozish mumkin!')
 
 pre_save(InviterButton)(InviterButton.ensure_single)
 
@@ -95,7 +98,7 @@ class Channel(Model):
     channel_id = fields.BigIntField(unique=True)
     name = fields.CharField(max_length=40)
     url = fields.TextField()
-    type = fields.CharEnumField(ChannelType, max_length=7)
+    type = fields.CharEnumField(ChannelType, max_length=8)
     
     class Meta:
         table = 'channels'
@@ -103,7 +106,7 @@ class Channel(Model):
     @staticmethod
     async def limit_channel(*args, **kwargs):
         count = await Channel.all().count()
-        if count > 20:
-            raise IntegrityError('Kanallar maksimal soni 20 ta')
+        if count >= MAX_CHANNELS_COUNT:
+            raise IntegrityError(f'Kanallar maksimal soni {MAX_CHANNELS_COUNT} ta')
 
 pre_save(Channel)(Channel.limit_channel)

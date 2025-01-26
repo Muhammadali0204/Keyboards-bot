@@ -1,9 +1,9 @@
 from aiogram import F, Router
-from aiogram.types import Message
 from aiogram.fsm.context import FSMContext
 from aiogram.enums.chat_type import ChatType
 from tortoise.exceptions import DoesNotExist
 from aiogram.filters.state import StateFilter
+from aiogram.types import Message, CallbackQuery
 from aiogram.filters import CommandStart, CommandObject
 
 from data.config import ADMINS
@@ -82,10 +82,24 @@ async def ortga_(msg : Message, state : FSMContext):
     button_id = (await state.get_data()).get('id', None)
     if button_id:
         button = await Button.filter(id=button_id).first()
-        parent = await button.parent
-        if parent:
-            keyboard = await admin_reply_keyboards.buttons_key(parent)
-            await state.set_data({'id':parent.id})
-            await msg.answer(parent.name, reply_markup=keyboard)
+        if button:
+            parent = await button.parent
+            if parent:
+                keyboard = await admin_reply_keyboards.buttons_key(parent)
+                await state.set_data({'id':parent.id})
+                await msg.answer(parent.name, reply_markup=keyboard)
+            else:
+                await bosh_menu(msg, state)
         else:
             await bosh_menu(msg, state)
+    else:
+        await bosh_menu(msg, state)
+        
+@admin_router.callback_query(F.data == 'bekor')
+async def cancel_callback(call : CallbackQuery, state : FSMContext):
+    await call.message.delete()
+    await call.message.answer(
+        '<b>Admin panel :</b>',
+        reply_markup=admin_reply_keyboards.admin_panel
+    )
+    await state.clear()

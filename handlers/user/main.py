@@ -69,10 +69,15 @@ async def ortga_(msg : Message, state : FSMContext):
     button_id = (await state.get_data()).get('id', None)
     if button_id:
         button = await Button.filter(id=button_id, status__in=[ButtonStatus.ACTIVE, ButtonStatus.TOP_ACTIVE]).first()
-        parent = await button.parent
-        if parent:
-            keyboard = await reply_keyboards.buttons_key(parent)
-            await state.set_data({'id': parent.id})
-            await msg.answer(parent.name, reply_markup=keyboard)
+        if button:
+            parent = await button.parent
+            if parent:
+                keyboard = await reply_keyboards.buttons_key(parent)
+                await state.set_data({'id': parent.id})
+                await msg.answer(parent.name, reply_markup=keyboard)
+            else:
+                await bosh_menu(msg, state)
         else:
             await bosh_menu(msg, state)
+    else:
+        await bosh_menu(msg, state)
