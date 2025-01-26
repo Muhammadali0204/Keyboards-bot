@@ -25,3 +25,4 @@ class ChannelStates(StatesGroup):
     get_channel_id = State()
     get_channel_name = State()
     get_channel_type = State()
+    get_editing_name = State()

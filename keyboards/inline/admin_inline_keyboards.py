@@ -150,3 +150,18 @@ channel_type_keyboard = InlineKeyboardMarkup(
         ]
     ]
 )
+
+def channel_keyboard(channel : Channel):
+    return InlineKeyboardMarkup(
+    inline_keyboard=[
+        [
+            InlineKeyboardButton(text='♻️Kanal nomini tahrirlash', callback_data=f'edit_name:{channel.id}')
+        ],
+        [
+            InlineKeyboardButton(text='⭕️ Kanalni o\'chirish', callback_data=f'delete_channel:{channel.id}')
+        ],
+        [
+            InlineKeyboardButton(text='❌ Yopish', callback_data='yopish')
+        ]
+    ]
+)

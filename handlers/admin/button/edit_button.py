@@ -33,10 +33,6 @@ async def info(call : CallbackQuery):
     await call.answer(
         f"Tugma nomi : {button.name} | Holati : {get_emojiname(button.status)}", show_alert=True
     )
-    
-@router.callback_query(F.data == 'yopish')
-async def button_status_ortga(call : CallbackQuery):
-    await call.message.edit_text("<b>Yopildi ✅</b>")
 
 @router.callback_query(F.data.startswith("edit_button:"))
 async def delete_button_call(call : CallbackQuery):

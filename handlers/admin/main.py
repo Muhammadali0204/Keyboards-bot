@@ -103,3 +103,7 @@ async def cancel_callback(call : CallbackQuery, state : FSMContext):
         reply_markup=admin_reply_keyboards.admin_panel
     )
     await state.clear()
+    
+@admin_router.callback_query(F.data == 'yopish')
+async def button_status_ortga(call : CallbackQuery):
+    await call.message.edit_text("<b>Yopildi ✅</b>")
