@@ -21,6 +21,7 @@ async def channel(msg : Message):
             '🗄Kanallar mavjud emas ❗️',
             reply_markup=admin_inline_keyboards.channels_keyboard(channels)
         )
+        return
     await msg.answer(
         '🗄Kanallar :',
         reply_markup=admin_inline_keyboards.channels_keyboard(channels)
