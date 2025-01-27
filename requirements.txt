@@ -1,4 +1,4 @@
-aerich==0.8.0
+aerich==0.8.1
 aiofiles==24.1.0
 aiogram==3.15.0
 aiohappyeyeballs==2.4.4

@@ -1,4 +1,4 @@
 [tool.aerich]
-tortoise_orm = "loader.DATABASE_CONFIG"
+tortoise_orm = "app.loader.DATABASE_CONFIG"
 location = "./migrations"
 src_folder = "./."
