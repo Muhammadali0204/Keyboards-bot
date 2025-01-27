@@ -64,5 +64,8 @@ admin_panel = ReplyKeyboardMarkup(
             KeyboardButton(text='Inviter tugmani tahrirlash ♻️'),
             KeyboardButton(text='Kanallar 🔗')
         ],
+        [
+            KeyboardButton(text='Foydalanuvchilar soni 🔢')
+        ]
     ], resize_keyboard=True
 )

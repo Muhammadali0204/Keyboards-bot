@@ -7,6 +7,7 @@ from aiogram.filters import StateFilter
 from aiogram.fsm.context import FSMContext
 
 from . import send_message_users
+from app.models.models import User
 
 
 
@@ -23,3 +24,12 @@ async def admin_panel(msg : Message, state : FSMContext):
         )
         return
     await show_panel(msg, state)
+    
+@router.message(StateFilter(None), F.text == 'Foydalanuvchilar soni 🔢')
+async def admin_panel(msg : Message):
+    count_users = await User.all().count()
+    
+    await msg.answer(
+        f"<b>Foydalanuvchilar soni: <i>{count_users}</i> ta</b>"
+    )
+    

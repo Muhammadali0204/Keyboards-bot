@@ -37,9 +37,10 @@ async def send_message_users(msg : Message, state : FSMContext):
         task = None
     
     msg_types = "\n".join([item.value.capitalize() for item in MessageType])
+    count_users = await User.all().count()
     await msg.answer(
-        'Foydalanuvchilarga yubormoqchi bo\'lgan xabaringizni yuboring :\n\n' \
-            '❗️Quyidagi xabar turlarini yuborishingiz mumkin :\n' + msg_types,
+        f'<b>Foydalanuvchilar soni : {count_users} ta\n\nFoydalanuvchilarga yubormoqchi bo\'lgan xabaringizni yuboring :\n\n</b>' \
+            '<i>❗️Quyidagi xabar turlarini yuborishingiz mumkin :\n' + msg_types + '</i>',
         reply_markup=admin_reply_keyboards.bekor_keyboard
     )
     clean_data(msg.from_user.id)
