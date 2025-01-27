@@ -35,3 +35,11 @@ def channel_list(channels : List[Channel]):
     builder.adjust(1)
     
     return builder.as_markup()
+
+def gift_channel_list(channels : List[Channel]):
+    builder = InlineKeyboardBuilder()
+    for channel in channels:
+        builder.button(text=channel.name, url=channel.url)
+    builder.adjust(1)
+    
+    return builder.as_markup()

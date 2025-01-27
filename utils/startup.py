@@ -14,7 +14,8 @@ async def set_webhook():
 async def set_command(bot : Bot):
     await bot.set_my_commands(
         commands=[
-            types.BotCommand(command='start', description='Botni ishga tushurish')
+            types.BotCommand(command='start', description='Botni ishga tushurish'),
+            types.BotCommand(command='admin', description='Adminga murojaat')
         ]
     )
 

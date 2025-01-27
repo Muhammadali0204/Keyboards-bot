@@ -3,19 +3,19 @@ from aiogram.fsm.context import FSMContext
 from aiogram.enums.chat_type import ChatType
 from aiogram.filters.state import StateFilter
 from aiogram.types import Message, CallbackQuery
-from aiogram.filters import CommandStart, CommandObject
+from aiogram.filters import CommandStart, CommandObject, Command, StateFilter
 
-from tortoise.expressions import Q
-from tortoise.functions import Count
 from tortoise.exceptions import DoesNotExist
 
 from loader import bot
 from . import get_message
 from utils.states import IsMemberState
+from data.config import BOT_ADMIN_USERNAME
 from utils.check_member import check_member
 from keyboards.reply import reply_keyboards
 from keyboards.inline import inline_keyboards
 from utils.send_messages import send_messages
+from utils.others import send_message_to_admins
 from .inviter_messages import main as inviter_main
 from utils.enums import ButtonStatus, ChannelType, InviteStatus
 from models.models import User, Button, Invite, InviterButton, Channel
@@ -65,7 +65,9 @@ async def start_command(msg : Message, command : CommandObject, state : FSMConte
         
         inviter_id = command.args
         if inviter_id and inviter_id.isdigit() and int(inviter_id) != msg.from_user.id:
-            if (await InviterButton.exists()) and (await User.filter(id=inviter_id).exists()):
+            inviter_btn = await InviterButton.first()
+            inviter_btn_btn = await inviter_btn.button
+            if (inviter_btn) and (await User.filter(id=inviter_id).exists()) and (inviter_btn_btn.status) != ButtonStatus.DEACTIVE:
                 try :
                     await Invite.create(
                         user = user,
@@ -96,22 +98,42 @@ async def check_membership(call : CallbackQuery, state : FSMContext):
         )
         
         user = await User.filter(id=call.from_user.id).first()
-        if user:
+        inviter_btn = await InviterButton.first()
+        inviter_btn_btn = await inviter_btn.button
+        if user and inviter_btn and (inviter_btn_btn.status) != ButtonStatus.DEACTIVE:
             invite = await Invite.filter(user=user, status=InviteStatus.INVITED).first()
             if invite:
                 invite.status = InviteStatus.INVITE_DONE
                 await invite.save()
-                inviter : User = await invite.inviter.annotate(invites_count=Count('invites', _filter=Q(invites__status=InviteStatus.INVITE_DONE))).first()
+                inviter : User = await invite.inviter
+                count = await Invite.filter(inviter=inviter, status=InviteStatus.INVITE_DONE).count()
                 try :
                     await bot.send_message(
                         inviter.id,
-                        f"<>Sizning do'stingiz {call.from_user.first_name} botimizda ro'yxatdan o'tdi va sizning takliflaringiz soni bittaga oshdi 🎉\n\n<i>Takliflaringiz soni : {inviter.invites_count}</i></b>"
+                        f"<b>Sizning do'stingiz {call.from_user.first_name} botimizda ro'yxatdan o'tdi va sizning takliflaringiz soni bittaga oshdi 🎉\n\n<i>Takliflaringiz soni : {count}</i> ta</b>"
                     )
-                except:
-                    pass
-        else:
+                    if inviter_btn.limit <= count:
+                        gift_channels = await Channel.filter(type=ChannelType.GIFT).all()
+                        if len(gift_channels) == 1:
+                            await bot.send_message(
+                                inviter.id,
+                                "<b>Tabriklaymiz 🎉\n\nQuyidagi kanalga qo'shilishingiz mumkin 😊</b>",
+                                reply_markup=inline_keyboards.gift_channel_list(gift_channels)
+                            )
+                        elif len(gift_channels) > 1:
+                            await bot.send_message(
+                                inviter.id,
+                                "<b>Tabriklaymiz 🎉\n\nQuyidagi kanallarga qo'shilishingiz mumkin 😊</b>",
+                                reply_markup=inline_keyboards.gift_channel_list(gift_channels)
+                            )
+                        else:
+                            await send_message_to_admins("Foydalanuvchilarga beriladigan sovg'a kanal mavjud emas ❗️")
+                except Exception as e:
+                    print(e)
+        elif user is None:
             try:
                 await User.create(
+                    id=call.from_user.id,
                     name= call.from_user.first_name
                 )
             except:
@@ -152,3 +174,11 @@ async def ortga_(msg : Message, state : FSMContext):
             await bosh_menu(msg, state)
     else:
         await bosh_menu(msg, state)
+        
+@router.message(StateFilter(None), Command('admin'))
+async def admin(msg : Message):
+    await msg.answer(
+        f"<b>🙍‍♂️Admin : @{BOT_ADMIN_USERNAME}</b>\n\n"\
+            "<i>Ushbu turdagi bot orqali siz o'zingiz xohlaganday tarzda bot tuzilishini shakllantirib olasiz\n"\
+                "Ya'ni botdagi tugmalar va xabarlarni hech qanday botning kodini o'zgartirmagan va adminga murojaat qilmagan holda o'zgartirishingiz mumkin !\n\n🤖Shunday ko'rinishdagi bot sizga kerak bo'lsa, murojaat etishingiz mumkin !</i>"
+    )

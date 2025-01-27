@@ -7,6 +7,7 @@ from fastapi import FastAPI, HTTPException, Request
 from loader import bot, dp, redis
 from handlers.user.main import router
 from handlers.admin.main import admin_router
+from handlers.channel.main import channel_router
 from middlewares.ratelimit import ThrottlingMiddlware
 from data.config import RATE_LIMIT, BOT_TOKEN, WEBHOOK_PATH, REDIS_KEY_PREFIX
 from utils.startup import shutdown, get_redis, set_webhook, set_command, notify_admins, init_db
@@ -37,7 +38,7 @@ async def on_startup():
     await notify_admins(bot)
     await init_db()
     
-    dp.include_routers(admin_router, router)
+    dp.include_routers(admin_router, router, channel_router)
 
     redis = await get_redis()
     dp.message.middleware.register(ThrottlingMiddlware(redis, RATE_LIMIT, REDIS_KEY_PREFIX)) 
@@ -66,7 +67,7 @@ async def main():
     await set_command(bot)
     await notify_admins(bot)
     
-    dp.include_routers(admin_router, router)
+    dp.include_routers(admin_router, router, channel_router)
 
     redis = await get_redis()
     dp.message.middleware.register(ThrottlingMiddlware(redis, RATE_LIMIT))

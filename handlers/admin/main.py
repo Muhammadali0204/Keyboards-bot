@@ -4,12 +4,12 @@ from aiogram.enums.chat_type import ChatType
 from tortoise.exceptions import DoesNotExist
 from aiogram.filters.state import StateFilter
 from aiogram.types import Message, CallbackQuery
-from aiogram.filters import CommandStart, CommandObject
+from aiogram.filters import CommandStart, CommandObject, Command
 
-from data.config import ADMINS
 from utils.others import bosh_menu
 from models.models import Button, User, Invite
 from keyboards.reply import admin_reply_keyboards
+from data.config import ADMINS, BOT_ADMIN_USERNAME
 from utils.send_messages import send_admin_messages
 
 from . import get_message
@@ -97,3 +97,11 @@ async def cancel_callback(call : CallbackQuery, state : FSMContext):
 @admin_router.callback_query(F.data == 'yopish')
 async def button_status_ortga(call : CallbackQuery):
     await call.message.edit_text("<b>Yopildi ✅</b>")
+    
+@admin_router.message(StateFilter(None), Command('admin'))
+async def admin(msg : Message):
+    await msg.answer(
+        f"<b>🙍‍♂️Admin : @{BOT_ADMIN_USERNAME}</b>\n\n"\
+            "<i>Ushbu turdagi bot orqali siz o'zingiz xohlaganday tarzda bot tuzilishini shakllantirib olasiz\n"\
+                "Ya'ni botdagi tugmalar va xabarlarni hech qanday botning kodini o'zgartirmagan va adminga murojaat qilmagan holda o'zgartirishingiz mumkin !\n\n🤖Shunday ko'rinishdagi bot sizga kerak bo'lsa, murojaat etishingiz mumkin !</i>"
+    )
