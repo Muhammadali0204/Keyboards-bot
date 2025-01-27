@@ -1,41 +1,43 @@
 version: '3.8'
 
 services:
-  fastapi:
+  python:
     build: .
-    container_name: fastapi_app
+    container_name: ${BOT_NAME}_app
+    restart: always
     ports:
-      - "8001:8001"
+      - "8001:8000"
     depends_on:
       - postgres
       - redis
-    environment:
-      - DATABASE_URL=postgresql://postgres:password@postgres/dbname
-      - REDIS_URL=redis://redis:6379
+    env_file:
+      - .env
     networks:
-      - backend
+      - test_uchun
 
   postgres:
     image: postgres:17
-    container_name: postgres_db
+    container_name: ${BOT_NAME}_db
+    restart: always
     environment:
-      POSTGRES_DB: dbname
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - db_data:/var/lib/postgresql/data
     networks:
-      - backend
+      - test_uchun
 
   redis:
     image: redis:latest
-    container_name: redis_server
+    container_name: ${BOT_NAME}_redis
+    restart: always
     networks:
-      - backend
+      - test_uchun
 
 volumes:
-  postgres_data:
+  db_data:
 
 networks:
-  backend:
+  test_uchun:
     driver: bridge
