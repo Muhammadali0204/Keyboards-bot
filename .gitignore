@@ -127,3 +127,5 @@ __pypackages__
 __pycache__
 
 migrations/
+docker-compose.yml
+Dockerfile
