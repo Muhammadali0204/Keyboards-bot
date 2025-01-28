@@ -32,6 +32,12 @@ services:
     image: redis:latest
     container_name: ${BOT_NAME}_redis
     restart: always
+    command: >
+      sh -c "sysctl -w vm.overcommit_memory=1 &&
+             sysctl -w net.core.somaxconn=65535 &&
+             redis-server --maxclients 10000"
+    sysctls:
+      - net.core.somaxconn=65535
     networks:
       - test_uchun
 
