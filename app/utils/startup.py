@@ -4,12 +4,12 @@ from aiogram import Bot, types
 from redis.asyncio import Redis
 
 from app.loader import bot
-from app.data.config import ADMINS, DB_URL, REDIS_URL, WEBHOOK_URI
+from app.data.config import ADMINS, DB_URL, REDIS_URL, WEBHOOK_URI, WEBHOOK_SECRET_TOKEN
 
 
 
 async def set_webhook():
-    await bot.set_webhook(WEBHOOK_URI, drop_pending_updates=True)
+    await bot.set_webhook(WEBHOOK_URI, drop_pending_updates=True, secret_token=WEBHOOK_SECRET_TOKEN)
 
 async def set_command(bot : Bot):
     await bot.set_my_commands(

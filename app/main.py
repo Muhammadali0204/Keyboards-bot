@@ -9,20 +9,20 @@ from app.handlers.user.main import router
 from app.handlers.admin.main import admin_router
 from app.handlers.channel.main import channel_router
 from app.middlewares.ratelimit import ThrottlingMiddlware
-from app.data.config import RATE_LIMIT, BOT_TOKEN, WEBHOOK_PATH, REDIS_KEY_PREFIX
+from app.data.config import RATE_LIMIT, WEBHOOK_PATH, REDIS_KEY_PREFIX, WEBHOOK_SECRET_TOKEN
 from app.utils.startup import shutdown, get_redis, set_webhook, set_command, notify_admins, init_db
 
 
 
-app = FastAPI()
+app = FastAPI(docs_url=None, redoc_url=None)
 
 
 async def handle_webhook(request: Request):
     url = str(request.url)
     index = url.rfind('/')
-    token = url[index + 1:]
+    path = url[index:]
 
-    if token == BOT_TOKEN:
+    if path == WEBHOOK_PATH and request.headers.get("X-Telegram-Bot-Api-Secret-Token", None) == WEBHOOK_SECRET_TOKEN:
         update = types.Update(**await request.json())
         await dp.feed_webhook_update(bot, update)
         return web.Response()

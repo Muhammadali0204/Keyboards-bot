@@ -15,8 +15,9 @@ WEBHOOK_HOST = config("WEBHOOK_HOST", cast=str)
 MAX_CHANNELS_COUNT = config('MAX_CHANNELS_COUNT', cast=int)
 REDIS_KEY_PREFIX = config('REDIS_KEY_PREFIX', cast=str)
 BOT_ADMIN_USERNAME = config('BOT_ADMIN_USERNAME', cast=str)
+WEBHOOK_PATH = config('WEBHOOK_PATH', cast=str)
+WEBHOOK_SECRET_TOKEN = config('WEBHOOK_SECRET_TOKEN', cast=str)
 
-WEBHOOK_PATH = f"/{BOT_TOKEN}"
 WEBHOOK_URI = WEBHOOK_HOST + WEBHOOK_PATH
 
 BASE_DIR = Path(__file__).resolve().parent.parent
