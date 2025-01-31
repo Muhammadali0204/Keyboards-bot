@@ -48,9 +48,9 @@ async def rating(msg : Message):
     answer = "🏆 Natijalar :\n\n"
     for idx, user in enumerate(users):
         if idx < len(MEDALS):
-            answer += f"{idx + 1}. <i>{user.name}</i> - {user.invite_count} ta {MEDALS[idx]}\n"
+            answer += f"{idx + 1}. <i>{user.name.replace('<', '').replace('>', '')}</i> - {user.invite_count} ta {MEDALS[idx]}\n"
         else:
-            answer += f"{idx + 1}. <i>{user.name}</i> - {user.invite_count} ta\n"
+            answer += f"{idx + 1}. <i>{user.name.replace('<', '').replace('>', '')}</i> - {user.invite_count} ta\n"
     
     await msg.answer(
         answer

@@ -45,9 +45,9 @@ async def rating(msg : Message):
             path = f"id: {user.id}"
         
         if idx < len(MEDALS):
-            answer += f"{idx + 1}. <i>{user.name}</i> - {user.invite_count} ta {MEDALS[idx]} ({path})\n"
+            answer += f"{idx + 1}. <i>{user.name.replace('<', '').replace('>', '')}</i> - {user.invite_count} ta {MEDALS[idx]} ({path})\n"
         else:
-            answer += f"{idx + 1}. <i>{user.name}</i> - {user.invite_count} ta ({path})\n"
+            answer += f"{idx + 1}. <i>{user.name.replace('<', '').replace('>', '')}</i> - {user.invite_count} ta ({path})\n"
     
     await msg.answer(
         answer
