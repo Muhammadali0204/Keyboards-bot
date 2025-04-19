@@ -129,3 +129,5 @@ __pycache__
 migrations/
 docker-compose.yml
 Dockerfile
+.vscode/
+.flake8

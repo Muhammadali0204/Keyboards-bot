@@ -1,7 +1,6 @@
 from aiogram.fsm.state import StatesGroup, State
 
 
-
 class IsMemberState(StatesGroup):
     is_member = State()
 
@@ -23,7 +22,7 @@ class InviterStates(StatesGroup):
     get_inviter_btn_name_rat = State()
     get_inviter_btn_limit_rat = State()
     get_new_limit = State()
-    
+
 
 class ChannelStates(StatesGroup):
     get_channel_id = State()

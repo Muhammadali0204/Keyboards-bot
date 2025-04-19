@@ -2,3 +2,16 @@
 tortoise_orm = "app.loader.DATABASE_CONFIG"
 location = "./migrations"
 src_folder = "./."
+
+[tool.black]
+line-length = 88
+target-version = ["py311"]
+exclude = '''
+/(
+    \.git
+  | \.venv
+  | venv
+  | build
+  | dist
+)/
+'''
