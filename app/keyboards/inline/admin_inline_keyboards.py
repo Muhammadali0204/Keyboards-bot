@@ -144,7 +144,7 @@ def channels_keyboard(channels : List[Channel]):
     
     for channel in channels:
         builder.button(
-            text=f'{channel.name}
+            text=f'{channel.name}\
             {'🎁' if channel.type == ChannelType.GIFT else '📊'}',
             callback_data=f'channel:{channel.id}'
         )
